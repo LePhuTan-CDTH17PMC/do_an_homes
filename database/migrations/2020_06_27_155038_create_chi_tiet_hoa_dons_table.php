@@ -19,7 +19,7 @@ class CreateChiTietHoaDonsTable extends Migration
             $table->Integer('can_ho_id');
             $table->Integer('dich_vu_id');
             $table->Float('so_luong');
-            $table->double('thanh_tien');
+            $table->Float('thanh_tien');
             $table->softDeletes();
             $table->timestamps();    
         });

@@ -58,21 +58,21 @@
       <div class="container">
           <div class="row">
           @if (count($tintuc) >0)
-              @foreach ($tintuc as $tin_tuc )
-              <div class="col-lg-4 mb-5">
-                  <div class="news-entry-item">
-                      <a href="#" class="thumbnail">
-                        <img  class="img-fluid" style="height:150px;weight:150px;" src="{{asset('assets/images/'.$tin_tuc->anh_dai_dien) }}" alt="err">
-                      </a>
-                      <h3 class="mb-0"><a href="#"><u>Tin tức {{$tin_tuc->id}}</u></a></h3>
-                      <div class="mb-3">
-                            <label><b>Title:</b> {{$tin_tuc->tieu_de}}</label>
-                            <br/>
-                            <label><b>Date:</b> {{$tin_tuc->created_at}}</label>
+                @foreach ($tintuc as $tin_tuc )
+                <div class="col-lg-4 mb-5">
+                    <div class="news-entry-item">
+                        <a href="#" class="thumbnail">
+                          <img  class="img-fluid" style="height:150px;weight:150px;" src="{{asset('assets/images/'.$tin_tuc->anh_dai_dien) }}" alt="err">
+                        </a>
+                        <h3 class="mb-0"><a href="#">Tin tức {{$tin_tuc->id}}</a></h3>
+                        <div class="mb-3">
+                              <a >Tạo vào</a> {{$tin_tuc->created_at}}
+                              <p>Nội dung: {{$tin_tuc->noi_dung_tt}}</p>
+                        </div>
                       </div>
-                    </div>
-                </div>
-              @endforeach    
+                  </div>
+                @endforeach    
+            @else
             @endif  
         </div>
       </div>
@@ -92,25 +92,25 @@
         </div>
       </div>
     </div>
-</body>
- <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
-<script src="{{ asset('assets/js/app.min.js') }}"</script>
-<script src="{{ asset('assets/libs/sweetale>rt2/sweetalert2.min.js') }}"></script>
-<script type="text/javascript">
-    window.onload = function(){
-      setTimeout("switch_Image()", 3000);
-    }
-    var current = 1;
-    var num_image = 3;
-    function switch_Image(){
-        current++;
-        document.images['image'].src ='assets/images/img/sile-' + current + '.jpg';
-      if(current < num_image){
-        setTimeout("switch_Image()", 3000);
-      }else if(current == num_image){
-        current = 0;
+    <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
+    <script src="{{ asset('assets/js/app.min.js') }}"</script>
+    <script src="{{ asset('assets/libs/sweetale>rt2/sweetalert2.min.js') }}"></script>
+    <script type="text/javascript">
+      window.onload = function(){
         setTimeout("switch_Image()", 3000);
       }
-  }
+      var current = 1;
+      var num_image = 3;
+      function switch_Image(){
+          current++;
+          document.images['image'].src ='assets/images/img/sile-' + current + '.jpg';
+        if(current < num_image){
+          setTimeout("switch_Image()", 3000);
+        }else if(current == num_image){
+          current = 0;
+          setTimeout("switch_Image()", 3000);
+        }
+    }
 </script>
+</body>
 </html>

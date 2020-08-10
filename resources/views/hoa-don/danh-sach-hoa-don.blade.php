@@ -3,10 +3,12 @@
     Danh sách hóa đơn
 @endsection
 @section('css')
+
     <link href="{{ asset('assets/libs/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables/responsive.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables/buttons.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables/select.bootstrap4.css') }}" rel="stylesheet" type="text/css" />
+  
     <link href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('js')
@@ -24,8 +26,15 @@
     <script src="{{ asset('assets/libs/datatables/dataTables.select.min.js') }}"></script>
     <script src="{{ asset('assets/libs/pdfmake/pdfmake.min.js') }}"></script>
     <script src="{{ asset('assets/libs/pdfmake/vfs_fonts.js') }}"></script>
+    <!-- third party js ends -->
+
+    <!-- Sweet Alert2 js-->
     <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+    
+    <!-- Datatables init -->
     <script src="{{ asset('assets/js/pages/init/datatables.init.js') }}"></script>
+
+    <!-- Sweet Alert2 QuanTriVien init js-->
     <script src="{{ asset('assets/js/pages/init/sweet-alerts-quan-tri-vien.init.js') }}"></script>
     
 @endsection
@@ -65,21 +74,21 @@
                                     <th>{{$hoa_don->canhoname}}</th>
                                     <th>{{$hoa_don->tong_tien}}</th>
                                     <th>{{$hoa_don->created_at}}</th>
-                                    @if($hoa_don->tinh_trang_tt == 1) 
-                                        <th> Đã thanh toán</th>
-                                    @else
-                                        <th> Chưa thanh toán</th>
-                                    @endif
-                                    <th style="width: 200px">
-                                        <div>
-                                            {!!Form::open(['action'=> ['HoaDonController@destroy',$hoa_don->id],'method' =>'PUT','class'=>'pull-right'])!!}
-                                            {{Form::hidden('_method','PUT')}}
-                                            {{Form::submit('Update',['class'=>'btn btn-info'])}}
+                                    @if($hoa_don->tinh_trang_tt == 1    ) 
+                                         <th> Đã thanh toán</th>
+                                      @else
+                                      <th> Chưa thanh toán</th>
+                                      @endif
+                                      <th style="width: 200px">
+                                            <div>
+                                            {{Form::hidden('_method','DELETE')}}
+                                            {{Form::submit('Delete',['class'=>'btn btn-danger'])}}
                                             {!!Form::close()!!}
-                                        </div>
-                                    </th>
+                                            </div>
+                                        </th>
                                 </tr>
                             @endforeach
+                        @else
                         @endif
                     </thead>
                     

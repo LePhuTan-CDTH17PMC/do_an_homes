@@ -11,7 +11,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
+ * 
  * PHP version 5
  *
  * @category  Microsoft
@@ -24,10 +24,6 @@
  
 namespace MicrosoftAzure\Storage\Blob\Models;
 
-use MicrosoftAzure\Storage\Common\Internal\MetadataTrait;
-use MicrosoftAzure\Storage\Common\Internal\Utilities;
-use MicrosoftAzure\Storage\Common\Internal\Resources;
-
 /**
  * Holds result of getContainerProperties and getContainerMetadata
  *
@@ -36,108 +32,95 @@ use MicrosoftAzure\Storage\Common\Internal\Resources;
  * @author    Azure Storage PHP SDK <dmsh@microsoft.com>
  * @copyright 2016 Microsoft Corporation
  * @license   https://github.com/azure/azure-storage-php/LICENSE
+ * @version   Release: 0.10.2
  * @link      https://github.com/azure/azure-storage-php
  */
 class GetContainerPropertiesResult
 {
-    use MetadataTrait;
-
-    private $_leaseStatus;
-    private $_leaseState;
-    private $_leaseDuration;
+    /**
+     * @var \DateTime
+     */
+    private $_lastModified;
     
     /**
-     * Gets blob leaseStatus.
-     *
-     * @return string
+     * @var string
      */
-    public function getLeaseStatus()
-    {
-        return $this->_leaseStatus;
-    }
-
-    /**
-     * Sets blob leaseStatus.
-     *
-     * @param string $leaseStatus value.
-     *
-     * @return void
-     */
-    public function setLeaseStatus($leaseStatus)
-    {
-        $this->_leaseStatus = $leaseStatus;
-    }
+    private $_etag;
     
     /**
-     * Gets blob lease state.
-     *
-     * @return string
+     * @var array
      */
-    public function getLeaseState()
+    private $_metadata; 
+    
+    /**
+     * Any operation that modifies the container or its properties or metadata 
+     * updates the last modified time. Operations on blobs do not affect the last 
+     * modified time of the container.
+     *
+     * @return \DateTime.
+     */
+    public function getLastModified()
     {
-        return $this->_leaseState;
+        return $this->_lastModified;
     }
 
     /**
-     * Sets blob lease state.
+     * Sets container lastModified.
      *
-     * @param string $leaseState value.
-     *
-     * @return void
+     * @param \DateTime $lastModified value.
+     * 
+     * @return none.
      */
-    public function setLeaseState($leaseState)
+    public function setLastModified($lastModified)
     {
-        $this->_leaseState = $leaseState;
+        $this->_lastModified = $lastModified;
     }
     
     /**
-     * Gets blob lease duration.
+     * The entity tag for the container. If the request version is 2011-08-18 or 
+     * newer, the ETag value will be in quotes.
      *
-     * @return string
+     * @return string.
      */
-    public function getLeaseDuration()
+    public function getETag()
     {
-        return $this->_leaseDuration;
+        return $this->_etag;
     }
 
     /**
-     * Sets blob leaseStatus.
+     * Sets container etag.
      *
-     * @param string $leaseDuration value.
-     *
-     * @return void
+     * @param string $etag value.
+     * 
+     * @return none.
      */
-    public function setLeaseDuration($leaseDuration)
+    public function setETag($etag)
     {
-        $this->_leaseDuration = $leaseDuration;
+        $this->_etag = $etag;
     }
-
+    
     /**
-     * Create an instance using the response headers from the API call.
-     *
-     * @param  array  $responseHeaders The array contains all the response headers
-     *
-     * @internal
-     *
-     * @return GetContainerPropertiesResult
+     * Gets user defined metadata.
+     * 
+     * @return array.
      */
-    public static function create(array $responseHeaders)
+    public function getMetadata()
     {
-        $result   = static::createMetadataResult($responseHeaders);
-
-        $result->setLeaseStatus(Utilities::tryGetValueInsensitive(
-            Resources::X_MS_LEASE_STATUS,
-            $responseHeaders
-        ));
-        $result->setLeaseState(Utilities::tryGetValueInsensitive(
-            Resources::X_MS_LEASE_STATE,
-            $responseHeaders
-        ));
-        $result->setLeaseDuration(Utilities::tryGetValueInsensitive(
-            Resources::X_MS_LEASE_DURATION,
-            $responseHeaders
-        ));
-        
-        return $result;
+        return $this->_metadata;
+    }
+    
+    /**
+     * Sets user defined metadata. This metadata should be added without the header
+     * prefix (x-ms-meta-*).
+     * 
+     * @param array $metadata user defined metadata object in array form.
+     * 
+     * @return none.
+     */
+    public function setMetadata($metadata)
+    {
+        $this->_metadata = $metadata;
     }
 }
+
+

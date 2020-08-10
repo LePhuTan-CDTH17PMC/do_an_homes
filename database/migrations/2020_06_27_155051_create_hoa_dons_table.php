@@ -16,7 +16,7 @@ class CreateHoaDonsTable extends Migration
         Schema::create('hoadon', function (Blueprint $table) {
             $table->increments('id');  
             $table->Integer('can_ho_id');
-            $table->double('tong_tien');
+            $table->Float('tong_tien');
             $table->Integer('nhan_vien_id');
             $table->Boolean('tinh_trang_tt');
             $table->softDeletes();

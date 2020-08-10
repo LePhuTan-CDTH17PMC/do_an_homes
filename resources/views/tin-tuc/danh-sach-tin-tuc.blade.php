@@ -58,19 +58,24 @@
             <div class="card-body">
                 <table  class="table dt-responsive nowrap">
                     <thead>
-                        <tr style="background-color: #6c757d; color:white">
+                        <tr style="background-color: #6c757d;; color:white">
                             <th>ID</th>
                             <th>Nội dung</th>
                             <th>Ngày đăng tin</th>
                             <th>     </th>
+                            
+                            
                         </tr>
                         @if (count($tintuc) >0)
                             @foreach ($tintuc as $tin_tuc )
                                     <tr>
                                         <th>{{$tin_tuc-> id}}</th>
-                                        <th>{{$tin_tuc-> tieu_de}}</th>
+                                        <th>{{$tin_tuc-> noi_dung_tt}}</th>
                                         <th>{{$tin_tuc-> created_at}}</th> 
-                                    `   <th style="width: 200px">
+                                        
+                                        
+                                        
+                                         <th style="width: 200px">
                                             <div>
                                             <a href="danh-sach-tin-tuc/{{$tin_tuc-> id}}/edit" class="btn btn-info" >Edit</a>
                                             {!!Form::open(['action'=> ['TinTucController@destroy',$tin_tuc-> id],'method' =>'POST','class'=>'pull-right',])!!}
@@ -81,6 +86,7 @@
                                         </th>
                                     </tr>                              
                             @endforeach    
+                        @else
                         @endif
                     </thead>
                     <!--  -->

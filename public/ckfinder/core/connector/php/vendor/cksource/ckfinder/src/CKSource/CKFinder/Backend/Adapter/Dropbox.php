@@ -3,8 +3,8 @@
 /*
  * CKFinder
  * ========
- * http://cksource.com/ckfinder
- * Copyright (C) 2007-2016, CKSource - Frederico Knabben. All rights reserved.
+ * https://ckeditor.com/ckfinder/
+ * Copyright (c) 2007-2020, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -27,21 +27,18 @@ class Dropbox extends \Spatie\FlysystemDropbox\DropboxAdapter
     /**
      * Backend configuration node.
      *
-     * @var array $backendConfig
+     * @var array
      */
     protected $backendConfig;
 
     /**
      * Constructor.
-     *
-     * @param DropboxClient $client
-     * @param array  $backendConfig
      */
     public function __construct(DropboxClient $client, array $backendConfig)
     {
         $this->backendConfig = $backendConfig;
 
-        parent::__construct($client, isset($backendConfig['root']) ? $backendConfig['root'] : null);
+        parent::__construct($client, isset($backendConfig['root']) ? $backendConfig['root'] : '');
     }
 
     /**
@@ -56,14 +53,14 @@ class Dropbox extends \Spatie\FlysystemDropbox\DropboxAdapter
         $fullPath = $this->applyPathPrefix($path);
 
         $parameters = [
-            'path' => '/'.trim($fullPath, '/')
+            'path' => '/'.trim($fullPath, '/'),
         ];
 
         $sharedLinkUrl = null;
 
         $response = $this->client->rpcEndpointRequest('sharing/list_shared_links', $parameters);
 
-        if (is_array($response) && isset($response['links']) && !empty($response['links'])) {
+        if (\is_array($response) && isset($response['links']) && !empty($response['links'])) {
             $linkInfo = current($response['links']);
             $sharedLinkUrl = $linkInfo['url'];
         } else {
@@ -76,8 +73,8 @@ class Dropbox extends \Spatie\FlysystemDropbox\DropboxAdapter
             $sharedLinkUrl = $fileInfo['url'];
         }
 
-        if (substr($sharedLinkUrl, -5) === '?dl=0') {
-            $sharedLinkUrl[strlen($sharedLinkUrl)-1] = '1';
+        if ('?dl=0' === substr($sharedLinkUrl, -5)) {
+            $sharedLinkUrl[\strlen($sharedLinkUrl) - 1] = '1';
         }
 
         return $sharedLinkUrl;
@@ -86,13 +83,13 @@ class Dropbox extends \Spatie\FlysystemDropbox\DropboxAdapter
     /**
      * Returns the file MIME type.
      *
-     * The Dropbox API v2 does not support mimetypes, but it's required
+     * The Dropbox API v2 does not support MIME types, but it is required
      * by some connector features, so this method tries to guess one using
-     * file extension.
+     * the file extension.
      *
      * @param string $path
      *
-     * @return array|false|null|string
+     * @return null|array|false|string
      */
     public function getMimeType($path)
     {
@@ -100,13 +97,14 @@ class Dropbox extends \Spatie\FlysystemDropbox\DropboxAdapter
 
         $mimeType = MimeType::detectByFileExtension(strtolower($ext));
 
-        return array('mimetype' => $mimeType ? $mimeType : 'application/octet-stream');
+        return ['mimetype' => $mimeType ? $mimeType : 'application/octet-stream'];
     }
 
     /**
-     * Returns file metadata, including guessed mimetype.
+     * Returns file metadata, including the guessed MIME type.
      *
      * @param string $path
+     *
      * @return array
      */
     public function getMetadata($path)

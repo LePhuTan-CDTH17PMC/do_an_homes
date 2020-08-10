@@ -17,7 +17,7 @@ class CreateDichVusTable extends Migration
             $table->increments('id');
             $table->string('ten_dich_vu');
             $table->string('don_vi');
-            $table->double('phi_dv');
+            $table->Float('phi_dv');
             $table->softDeletes();
             $table->timestamps();
         });

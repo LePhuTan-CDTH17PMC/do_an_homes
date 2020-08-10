@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\BoPhan;
 use App\NhanVien;
-use App\LoaiAccount;
 use Hash;
 use DB;
 
@@ -18,9 +17,10 @@ class NhanVienController extends Controller
      */
     
     public function index() {
-         $nhanvien = DB::select('SELECT nhanvien.id as id_nhan_vien,`ho_ten_nv`,`CMND`,`email`,`SDT`,`ngay_sinh`,`username`,`password`,loaiaccount.ten_loai_account as loai_account,bophan.ten_bo_phan as "tenbophan" FROM `nhanvien`,`bophan`,loaiaccount WHERE nhanvien.bo_phan_id=bophan.id and nhanvien.loai_account_id=loaiaccount.id and nhanvien.deleted_at is null ORDER BY id_nhan_vien');
-        return view('nhan-vien.danh-sach-nhan-vien')-> with('nhanvien',$nhanvien); 
-    }
+         $nhanvien = DB::select('SELECT nhanvien.id as
+    id_nhan_vien
+    ,`ho_ten_nv`,`CMND`,`email`,`SDT`,`ngay_sinh`,`username`,`password`,loaiaccount.ten_loai_account as loai_account,bophan.ten_bo_phan as "tenbophan" FROM `nhanvien`,`bophan`,loaiaccount WHERE nhanvien.bo_phan_id=bophan.id and nhanvien.loai_account_id=loaiaccount.id and nhanvien.deleted_at is null ORDER BY id_nhan_vien');
+     return view('nhan-vien.danh-sach-nhan-vien')-> with('nhanvien',$nhanvien); }
 
     /**
      * Show the form for creating a new resource.
@@ -29,8 +29,8 @@ class NhanVienController extends Controller
      */
     public function create()
     {
-        $loaitaikhoan = DB::select('SELECT * from loaiaccount');
-        $bophan = BoPhan::all();
+        $loaitaikhoan=DB::select('SELECT * from loaiaccount');
+        $bophan= DB::select('SELECT * from bophan');
         return view('nhan-vien.them-moi-nv',compact('bophan','loaitaikhoan'));
     }
 
@@ -63,6 +63,8 @@ class NhanVienController extends Controller
         $nhanvien->password =hash::make($request ->input('matkhau'));
         $nhanvien->loai_account_id =$request ->input('loaitaikhoan');
         $nhanvien->bo_phan_id =$request ->input('bophan');
+
+
         $nhanvien->save();
 
         return redirect('danh-sach-nhan-vien')->with('success','Add success');
@@ -88,14 +90,9 @@ class NhanVienController extends Controller
     public function edit($id)
     {
         $nhanvien=nhanvien::find($id);
-        $id = $nhanvien->loai_account_id;
-        $loaitaikhoan = LoaiAccount::all();
-        $bophan= BoPhan::all();
-        // $loai_tk_edit = LoaiAccount::select(['ten_loai_account'])->where([
-        //     $id =>'loaiaccount.id'
-        // ])->first();
-        
-        return view('nhan-vien.sua-nhan-vien',compact('bophan','loaitaikhoan','nhanvien'    ));
+        $loaitaikhoan=DB::select('SELECT * from loaiaccount');
+        $bophan= DB::select('SELECT * from bophan');
+        return view('nhan-vien.sua-nhan-vien',compact('bophan','loaitaikhoan','nhanvien'));
     }
 
     /**
@@ -119,15 +116,17 @@ class NhanVienController extends Controller
             'bophan'  =>'required'
         ]);
         $nhanvien = NhanVien::find($id);
-        $nhanvien->ho_ten_nv = $request->input('ten_nhan_vien');
-        $nhanvien->CMND = $request->input('CMND');
-        $nhanvien->SDT = $request->input('SDT');
-        $nhanvien->email = $request->input('email');
-        $nhanvien->ngay_sinh = $request->input('ngaysinh');
-        $nhanvien->username = $request->input('username');
-        $nhanvien->password = hash::make($request->input('matkhau'));
-        $nhanvien->loai_account_id = $request->input('loaitaikhoan');
-        $nhanvien->bo_phan_id = $request->input('bophan');
+        $nhanvien->ho_ten_nv =$request ->input('ten_nhan_vien');
+        $nhanvien->CMND =$request ->input('CMND');
+        $nhanvien->SDT =$request ->input('SDT');
+        $nhanvien->email =$request ->input('email');
+        $nhanvien->ngay_sinh =$request ->input('ngaysinh');
+        $nhanvien->username =$request ->input('username');
+        $nhanvien->password =hash::make($request ->input('matkhau'));
+        $nhanvien->loai_account_id =$request ->input('loaitaikhoan');
+        $nhanvien->bo_phan_id =$request ->input('bophan');
+
+
         $nhanvien->save();
 
         return redirect('danh-sach-nhan-vien')->with('success','Change success');

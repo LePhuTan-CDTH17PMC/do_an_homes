@@ -1,5 +1,5 @@
 <header id="topnav">
-<div class="navbar-custom" style="; co;color:black  ">
+<div class="navbar-custom" style="background-color: white; co;color:black  ">
         <div class="container-fluid">
              <div class="logo-box topnav-menu  mb-0">
              <a  class="logo text-center">

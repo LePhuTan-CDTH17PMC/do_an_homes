@@ -27,15 +27,7 @@
                     {{Form::label('title','Đơn vị')}}<span class="text-danger"> 
                     *</span>
                     <div class="form-group">
-                        <select class="form-control " id="canho" name="don_vi" required focus>
-                            <option value="0" disabled selected>Chọn đơn vị</option>        
-                            <option value="1">m3/Tháng</option>  
-                            <option >kWh/Tháng</option>  
-                            <option >Chiếc/Tháng</option>  
-                            <option>Hộ/Tháng</option>  
-                            <option>Người/Tháng</option>  
-                        </select>
-                    </div> 
+                        {{Form::Text('don_vi','',['class'=> 'form-control','placeholder'=>'Nhập đơn vị'])}}
                     </div> 
                     <div class="form-group">
                     {{Form::label('title','Chi Phí')}}<span class="text-danger"> 

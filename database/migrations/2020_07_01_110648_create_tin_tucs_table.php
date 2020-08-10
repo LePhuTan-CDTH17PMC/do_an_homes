@@ -15,8 +15,7 @@ class CreateTinTucsTable extends Migration
     {
         Schema::create('tintuc', function (Blueprint $table) {
             $table->increments('id');
-            $table->Text('tieu_de');
-            $table->Text('noi_dung_tt');
+            $table->String('noi_dung_tt');
             $table->String('anh_dai_dien');
             $table->Integer('nhan_vien_id');
             $table->softDeletes();

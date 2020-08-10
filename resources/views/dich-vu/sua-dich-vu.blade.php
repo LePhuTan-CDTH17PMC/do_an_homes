@@ -6,7 +6,9 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
-                    <h4 class="page-title">Chi tiết dịch vụ</h4>
+                
+                    <h4 class="page-title">Thêm mới dịch vụ</h4>
+                
             </div>
         </div>
     </div>
@@ -22,18 +24,11 @@
                     </div> 
                     </div>
                     <div class="form-group">
-                    {{Form::label('title','Đơn vị')}}<span class="text-danger"> *</span>
+                    {{Form::label('title','Đơn vị')}}<span class="text-danger"> 
+                    *</span>
                     <div class="form-group">
-                        <select class="form-control " id="canho" name="don_vi" value = "" required focus>
-                            <option value="" >Chọn đơn vị</option>       
-                            <option> m3/Tháng</option>  
-                            <option> kWh/Tháng</option>  
-                            <option> Chiếc/Tháng</option>  
-                            <option> Hộ/Tháng</option>  
-                            <option> Người/Tháng</option>  
-                        </select>
+                        {{Form::Text('don_vi',$dichvu->don_vi,['class'=> 'form-control','placeholder'=>'Nhập đơn vị'])}}
                     </div> 
-                     </div> 
                     <div class="form-group">
                     {{Form::label('title','Chi Phí')}}<span class="text-danger"> 
                     *</span>

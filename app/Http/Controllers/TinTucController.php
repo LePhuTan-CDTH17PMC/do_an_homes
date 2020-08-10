@@ -36,11 +36,15 @@ class TinTucController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'tieu_de' =>'required',
             'noi_dung_tt'=>'required',
-            'anh_dai_dien'=>'required'
+            'anh_dai_dien'=>'required',
+
+        ],			
+        [
+            'noi_dung_tt.required' => 'Vui lòng nhập nội dung tin tức',
+            'anh_dai_dien.required' => 'Vui lòng chọn ảnh',
         ]
-        );
+    );
         if($request->hasFile('anh_dai_dien')) {
             $this->validate($request, 
                 [
@@ -56,8 +60,7 @@ class TinTucController extends Controller
             $filePath = public_path('assets\images');
             $file->move($filePath, $file_name);
             $tintuc = new Tintuc;
-            $tintuc->tieu_de = $request->input('tieu_de');
-            $tintuc->noi_dung_tt = $request->input('noi_dung_tt');
+            $tintuc->noi_dung_tt = $request->noi_dung_tt;
             $tintuc->anh_dai_dien = $file_name;
             $tintuc->nhan_vien_id=1;
             $tintuc->save();
@@ -99,7 +102,6 @@ class TinTucController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-                 'tieu_de' =>'required',
                 'noi_dung_tt'=>'required',
                 'anh_dai_dien'=>'required',
 
@@ -124,7 +126,6 @@ class TinTucController extends Controller
             $filePath = public_path('assets\images');
             $file->move($filePath, $file_name);
             $tintuc =  TinTuc::find($id);
-            $tintuc->tieu_de = $request->input('tieu_de');
             $tintuc->noi_dung_tt = $request->noi_dung_tt;
             $tintuc->anh_dai_dien = $file_name;
             $tintuc->nhan_vien_id=1;

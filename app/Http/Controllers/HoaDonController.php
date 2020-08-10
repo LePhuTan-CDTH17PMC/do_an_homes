@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
 use App\HoaDon;
 use App\CanHo;
 use App\DichVu;
@@ -30,10 +29,10 @@ class HoaDonController extends Controller
      */
     public function create()
     {
-        $canho = CanHo::all();
-        $dichvu = DichVu::all();
+        $canho=CanHo::all();
+        $dichvu=DichVu::all();
         $tongtien = DB::select('SELECT SUM(thanh_tien) as tongtien from chitiethoadon,hoadon where chitiethoadon.hoa_don_id=hoadon.id');
-        $thanhtien = DB::select('SELECT dichvu.phi_dv*so_luong as thanhtien from chitiethoadon,dichvu where chitiethoadon.dich_vu_id=dichvu.id' );
+        $thanhtien=DB::select('SELECT dichvu.phi_dv*so_luong as thanhtien from chitiethoadon,dichvu where chitiethoadon.dich_vu_id=dichvu.id' );
         return view('hoa-don.them-moi-hoa-don',compact('canho','dichvu','tongtien','thanhtien'));
     }
 
@@ -49,36 +48,28 @@ class HoaDonController extends Controller
             'can_ho'=>'required',
             'dich_vu'=>'required',
             'so_luong'=>'required',
+            // 'tong_tien'=>'required', 
             'tinh_trang_tt'=>'required', 
-            // // 'tong_tien'=>'required', 
             // 'thanh_tien'=>'required', 
         ]);
-
-        $tt = 0;
-        for($i=0; $i<count($request->input('dich_vu'));$i++){
-            $dichvu =DichVu::find($request->input('dich_vu.'.$i.'.id'));
-            $tt += $request->input('so_luong.'.$i.'.soluong')  * $dichvu->phi_dv; 
-        }
-            
-         $hoadon = new HoaDon;
-         $hoadon->can_ho_id =$request->input('can_ho');
-         $hoadon->tinh_trang_tt=$request->input('tinh_trang_tt');
-         $hoadon->nhan_vien_id=Auth::guard('nhanvien')->user()->id;
-         $hoadon->tong_tien = $tt;
-         $hoadon->save();
         
+        $hoadon = new HoaDon;
+        $hoadon->can_ho_id =$request ->input('can_ho');
+        // $hoadon->tong_tien=$request->input('tong_tien');
+        $hoadon->tong_tien=10000;
+        $hoadon->tinh_trang_tt=$request->input('tinh_trang_tt');
+        $hoadon->nhan_vien_id=1;
+        $hoadon->save();
         
-        for($i=0; $i<count($request->input('dich_vu'));$i++){
-            $cthoadon = new ChiTietHoaDon;
-            $hoadon_id=(DB::table('hoadon')->max('id'));
-            $cthoadon->hoa_don_id=$hoadon_id;
-            $cthoadon->can_ho_id =$request ->input('can_ho');
-            $cthoadon->dich_vu_id = ($request->input('dich_vu.'.$i.'.id'));
-            $dichvu =DichVu::find($request->input('dich_vu.'.$i.'.id'));
-            $cthoadon->so_luong = $request->input('so_luong.'.$i.'.soluong');   
-            $cthoadon->thanh_tien = $cthoadon->so_luong * $dichvu->phi_dv; 
-            $cthoadon->save();
-         }
+        $cthoadon = new ChiTietHoaDon;
+        $cthoadon->hoa_don_id=$hoadon->id;
+        $cthoadon->can_ho_id =$request ->input('can_ho');
+        $cthoadon->dich_vu_id=$request->input('dich_vu');
+        $cthoadon->so_luong=$request->input('so_luong');
+        // $cthoadon->thanh_tien=$request->input('thanh_tien');
+        //$cthoadon->dich_vu_id->phi_dv * $cthoadon->so_luong;
+        $cthoadon->thanh_tien= 200000;
+        $cthoadon->save();
 
         return redirect('hoa-don')->with('success','Add success');
     }
@@ -102,17 +93,7 @@ class HoaDonController extends Controller
      */
     public function edit($id)
     {
-        
-         $hoadon =HoaDon::find($id);
-        // ->select([
-        //     'canho,name',
-        //     'tinh_trang_tt'
-        // ])
-        // ->where([
-        //       'hoadon.deleted_at Í NULL'
-        // ]);
-
-        return view('hoa-don.tinh-trang-hoa-don')->with('hoadon',$hoadon);
+        //
     }
 
     /**
@@ -124,17 +105,7 @@ class HoaDonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
-        $hoadon = HoaDon::find($id);
-        if( $hoadon->tinh_trang_tt == 1) {
-            $hoadon->tinh_trang_tt = 0;
-        }
-        else {
-            $hoadon->tinh_trang_tt = 1;
-        }        
-        $hoadon->save();
-
-        return redirect('hoa-don')->with('success','Delete success');
+        //
     }
 
     /**
@@ -146,8 +117,8 @@ class HoaDonController extends Controller
     public function destroy($id)
     {
         $hoadon = HoaDon::find($id);
-        $hoadon->delete();
+        $dichvu->delete();
 
-        return redirect('hoa-don')->with('success','Delete success');
+        return redirect('hoa-don-vu')->with('success','Delete success');
     }
 }

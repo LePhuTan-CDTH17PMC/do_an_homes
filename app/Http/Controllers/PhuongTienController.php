@@ -7,6 +7,7 @@ use App\PhuongTien;
 use App\LoaiPhuongTien;
 use App\CanHo;
 use App\KhuVuc;
+use App\DichVu;
 use DB;
 
 
@@ -32,9 +33,10 @@ class PhuongTienController extends Controller
     {
         $khuvuc=KhuVuc::all();
         $canho=CanHo::all();
+        $dichvu=DichVu::all();
         $loaiphuongtien=LoaiPhuongTien::all();
 
-        return view('phuong-tien.them-moi-phuong-tien',compact('canho','loaiphuongtien','dichvu'));
+        return view('phuong-tien.them-moi-phuong-tien',compact('canho','loaiphuongtien','dichvu', 'khuvuc'));
     }
 
     /**
@@ -50,6 +52,7 @@ class PhuongTienController extends Controller
             'mau_sac'=>'required',
             'bien_so'=>'required',
             'loai_phuong_tien'=>'required',
+            'dich_vu'=>'required',
             'khu_vuc'=>'required',
             'can_ho'=>'required',
 
@@ -61,6 +64,7 @@ class PhuongTienController extends Controller
         $phuongtien->bien_so  =$request ->input('bien_so');
         $phuongtien->can_ho_id  =$request ->input('can_ho');
         $phuongtien->khu_vuc_id  =$request ->input('khu_vuc');
+        $phuongtien->dich_vu_id  =$request ->input('dich_vu');
         $phuongtien->loai_phuong_tien_id  =$request ->input('loai_phuong_tien');
         
         $phuongtien->save();
@@ -89,9 +93,10 @@ class PhuongTienController extends Controller
     {
         $khuvuc=KhuVuc::all();
         $canho=CanHo::all();
+        $dichvu=DichVu::all();
         $loaiphuongtien=LoaiPhuongTien::all();
         $phuongtien=PhuongTien::find($id);
-        return view('phuong-tien.sua-phuong-tien',compact('canho','loaiphuongtien','khuvuc', 'phuongtien'));
+        return view('phuong-tien.sua-phuong-tien',compact('canho','loaiphuongtien','khuvuc','dichvu', 'phuongtien'));
     }
 
     /**
@@ -108,6 +113,7 @@ class PhuongTienController extends Controller
             'mau_sac'=>'required',
             'bien_so'=>'required',
             'loai_phuong_tien'=>'required',
+            'dich_vu'=>'required',
             'khu_vuc'=>'required',
             'can_ho'=>'required',
 
@@ -119,7 +125,11 @@ class PhuongTienController extends Controller
         $phuongtien->bien_so  =$request ->input('bien_so');
         $phuongtien->can_ho_id  =$request ->input('can_ho');
         $phuongtien->khu_vuc_id  =$request ->input('khu_vuc');
+        $phuongtien->dich_vu_id  =$request ->input('dich_vu');
         $phuongtien->loai_phuong_tien_id  =$request ->input('loai_phuong_tien');
+        
+
+        
         $phuongtien->save();
 
         return redirect('phuong-tien')->with('success','Update success');
